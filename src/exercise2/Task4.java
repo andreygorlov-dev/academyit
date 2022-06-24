@@ -25,7 +25,7 @@ public class Task4 {
         } else if (speed > maxAccessSpeed) {
             Integer overSpeed = speed - maxAccessSpeed;//скорость превышения
             Integer k = overSpeed / speedGrade;//коэффициент превышения скорости
-            Integer fine = k * fineGrade;//величина штрафа
+            Integer fine = (k == 0 ? 1 : k) * fineGrade;//величина штрафа
             System.out.println("Штраф составляет " + fine);
         } else {
             System.out.println("Доброго пути!");

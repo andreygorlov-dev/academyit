@@ -24,7 +24,7 @@ public class Task5 {
         } else if(speed>maxAccessSpeed) {
             Integer overSpeed = speed - maxAccessSpeed;//скорость превышения
             Integer k = overSpeed/speedGrade;//коэффициент превышения скорости
-            Integer fine = k * fineGrade;//величина штрафа
+            Integer fine = (k == 0 ? 1 : k) * fineGrade;//величина штрафа
 
             System.out.println("Через сколько дней оплачен штраф: ");
             Integer countDay = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
