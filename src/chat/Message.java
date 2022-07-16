@@ -1,13 +1,15 @@
 package chat;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message implements Serializable {
+    private static final long serialVersionUID = 7840314799711590029L;
 
-    private User user;
-    private String text;
-    private Date dateTime;
+    private final User user;
+    private final String text;
+    private final Date dateTime;
 
     public Message(User user, String text, Date dateTime) {
         this.user = user;
@@ -29,6 +31,11 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return user.getName() + " || " + dateTime + " || " + text;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        return user.getName() + " " + simpleDateFormat.format(dateTime) + " : " + text;
+    }
+
+    public void printMessage() {
+        System.out.println(this.user.getColor() + this + this.user.getColor());
     }
 }

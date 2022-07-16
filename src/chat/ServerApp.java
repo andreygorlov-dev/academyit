@@ -3,20 +3,17 @@ package chat;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ServerApp {
 
-    private static List<Message> messageList = new ArrayList<>();
-    private static List<Socket> socketList = new ArrayList<>();
-    private static List<ServerThread> serverThreadList = new ArrayList<>();
+    private static final List<Message> messageList = new ArrayList<>();
+    private static final List<Socket> socketList = new ArrayList<>();
+    private static final List<ServerThread> serverThreadList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(8080)) {
-            System.out.println("Server start: " + serverSocket.getLocalSocketAddress().toString());
             while (true) {
                 socketList.add(serverSocket.accept());
                 serverThreadList.add(new ServerThread(socketList.get(socketList.size() - 1)));
@@ -28,43 +25,52 @@ public class ServerApp {
     private static class ServerThread extends Thread {
 
         private final Socket socket;
+        private final ObjectOutputStream objectOutputStream;
+        private boolean connect;
 
-        public ServerThread(Socket socket) {
+        public ServerThread(Socket socket) throws IOException {
             this.socket = socket;
+            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            connect = true;
+        }
+
+        public ObjectOutputStream getObjectOutputStream() {
+            return objectOutputStream;
+        }
+
+        public Socket getSocket() {
+            return socket;
+        }
+
+        public boolean isConnect() {
+            return connect;
         }
 
         @Override
         public void run() {
-            //Отправляет все сообщения при подключении нового клиента
-            try (ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream())) {
-                outputStream.writeObject(messageList);
-                outputStream.flush();
-
-
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())) {
+                //Отправляет все сообщения при подключении нового клиента
+                objectOutputStream.writeObject(messageList);
+                objectOutputStream.flush();
                 //Обрабатываем полученные сообщения
-                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-                    while (true) {
-                        String line = bufferedReader.readLine();
-                        Message message = new Message(new User(socket.getInetAddress().getHostAddress(), "red"), line, new Date());
-                        messageList.add(message);
-                        sendMessageAllClient(message);
-                        System.out.println(messageList.get(messageList.size() - 1).toString());
-                    }
+                while (true) {
+                    Message message = (Message) objectInputStream.readObject();
+                    messageList.add(message);
+                    sendMessageAllClient(message);
+                    message.printMessage();
                 }
-
-            } catch (IOException e) {
-                System.out.println("Клиент отключился");
+            } catch (ClassNotFoundException | IOException e) {
+                System.out.println("Клиент отключён!");
+                connect = false;
             }
 
         }
 
         private void sendMessageAllClient(Message message) throws IOException {
-            for (Socket socketItem : socketList) {
-                if (socketItem.isConnected() && !socketItem.equals(socket)) {
-                    try (ObjectOutputStream outputStream = new ObjectOutputStream(socketItem.getOutputStream())) {
-                        outputStream.writeObject(message);
-                        outputStream.flush();
-                    }
+            for (ServerThread serverThread : serverThreadList) {
+                if (serverThread.isConnect() && !serverThread.getSocket().equals(socket)) {
+                    serverThread.getObjectOutputStream().writeObject(message);
+                    serverThread.getObjectOutputStream().flush();
                 }
             }
 
