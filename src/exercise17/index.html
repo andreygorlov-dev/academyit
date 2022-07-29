@@ -4,54 +4,74 @@
     <meta charset="UTF-8">
     <title>Интернет магазин</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <script src="scripts/main.js"></script>
 </head>
 <body>
     <div class="header">
         <div class="dropdown">
-            <div class="menu_button">Материнские платы</div>
+            <div onclick="onClickMenu('Mother_Board')" class="menu_button">Материнские платы</div>
             <div class="dropdown-content">
                 <div class="dropdown-content-btn">ASUS</div>
                 <div class="dropdown-content-btn">MSI</div>
-                <div class="dropdown-content-btn"></div>
-                <div class="dropdown-content-btn"></div>
-                <div class="dropdown-content-btn"></div>
-                <div class="dropdown-content-btn"></div>
+                <!--Доп контент из api-->
             </div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">Видеокарты</div>
+            <div onclick="onClickMenu('Video_Card')" class="menu_button">Видеокарты</div>
             <div class="dropdown-content">
                 <div class="dropdown-content-btn">NVida Gforce</div>
                 <div class="dropdown-content-btn">AMD Radeon</div>
             </div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">Процессоры</div>
+            <div onclick="onClickMenu('CPU')" class="menu_button">Процессоры</div>
             <div class="dropdown-content">
                 <div class="dropdown-content-btn">AMD</div>
                 <div class="dropdown-content-btn">Intel</div>
             </div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">ОЗУ</div>
+            <div onclick="onClickMenu('RAM')" class="menu_button">ОЗУ</div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">ПЗУ</div>
+            <div onclick="onClickMenu('ROM')" class="menu_button">ПЗУ</div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">Блоки питания</div>
+            <div onclick="onClickMenu('Power_Supply')" class="menu_button">Блоки питания</div>
         </div>
         <div class="dropdown">
-            <div class="menu_button">Аксесуары</div>
+            <div onclick="onClickMenu('Accessories')" class="menu_button">Аксесуары</div>
         </div>
     </div>
     <div class="content">
-        <div id="home_window" class="home_window">
-
+        <div id="home_block" class="home_block">
+            <div onclick="onClickMenu('Mother_Board')" class="panel">
+                <img src="styles/img/materinskaya_plata.webp"/>
+            </div>
+            <div onclick="onClickMenu('Video_Card')" class="panel">
+                <img src="styles/img/video_card.jpg"/>
+            </div>
+            <div onclick="onClickMenu('CPU')" class="panel">
+                <img src="styles/img/CPU.jpg"/>
+            </div>
+            <div onclick="onClickMenu('RAM')" class="panel">
+                <img src="styles/img/memory_card.jpg"/>
+            </div>
+            <div onclick="onClickMenu('ROM')" class="panel">
+                <img src="styles/img/SSD.jpg"/>
+            </div>
+            <div onclick="onClickMenu('Power_Supply')" class="panel">
+                <img src="styles/img/Power_Supply.jpg"/>
+            </div>
+            <div onclick="onClickMenu('Accessories')" class="panel">
+                <img src="styles/img/monitor.webp"/>
+            </div>
+        </div>
+        <div id="catalog_block" class="catalog_block">
         </div>
     </div>
     <div class="footer">
-
+        <p class="footer_description"></p>
     </div>
 </body>
 </html>
