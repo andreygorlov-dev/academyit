@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Кто хочет стать милионером</title>
+	<script type="text/javascript">
+		var question = [
+			{
+				title: "2+2",
+				answers : [
+					{
+						title: "4",
+						right: true
+					}, {
+						title: "5",
+						right: false
+					}, {
+						title: "6",
+						right: false
+					}, {
+						title: "7",
+						right: false
+					}
+				],
+				sum: 100
+			}, {
+				title: "В каком возрасте умер Курт Кобейн",
+				answers : [
+					{
+						title: "35",
+						right: false
+					},
+					{
+						title: "27",
+						right: true
+					},
+					{
+						title: "22",
+						right: false
+					},
+					{
+						title: "21",
+						right: false
+					}
+				],
+				sum: 1000
+			}, {
+				title: "В каком году вышел первый альбом Rammstein",
+				answers : [
+					{
+						title: "1980",
+						right: false
+					},
+					{
+						title: "1950",
+						right: false
+					},
+					{
+						title: "2022",
+						right: false
+					},
+					{
+						title: "1994",
+						right: true
+					}
+				],
+				sum: 5000
+			}, {
+				title: "Какой национальный цветок Японии",
+				answers : [
+					{
+						title: "Ландыш",
+						right: false
+					},
+					{
+						title: "Сакура",
+						right: true
+					},
+					{
+						title: "Роза",
+						right: false
+					},
+					{
+						title: "Мимоза",
+						right: false
+					}
+				],
+				sum: 10000
+			}, {
+				title: "Какая валюта Дании",
+				answers : [
+					{
+						title: "Крона",
+						right: true
+					},
+					{
+						title: "Евро",
+						right: false
+					},
+					{
+						title: "Рубли",
+						right: false
+					},
+					{
+						title: "Фунты",
+						right: false
+					}
+				],
+				sum: 100000
+			}, {
+				title: "Какое животное можно увидеть на логотипе Porsche",
+				answers : [
+					{
+						title: "Слон",
+						right: false
+					},
+					{
+						title: "Зебра",
+						right: false
+					},
+					{
+						title: "Лошадь",
+						right: true
+					},
+					{
+						title: "Кошка",
+						right: false
+					}
+				],
+				sum: 1000000
+			}
+		];
+
+		var numQuestion = 0;
+
+		function start() {
+			setQuestion(numQuestion);
+		}
+
+		function setAnswer(numAnswer) {
+			console.log(question[numQuestion].answers[numAnswer]);
+			if (question[numQuestion].answers[numAnswer].right) {
+				alert("Верный ответ! Ваша сумма " + question[numQuestion].sum);
+				if (numQuestion == question.length - 1) {
+					alert("Вы выиграли! Ваша сумма " + question[numQuestion].sum);
+					alert("Игра начинается заново");
+					numQuestion = 0;
+				} else {
+					numQuestion++;
+				}
+			} else {
+				alert("Неверный ответ! Вы проиграли");
+				if (numQuestion > 0) {
+					alert("Ваш выигрыш " + question[numQuestion - 1].sum)
+				}
+				numQuestion = 0;
+				alert("Игра начинается заново");
+			}
+			setQuestion(numQuestion);
+		}
+
+		function setQuestion(numQuestion) {
+			document.getElementById('question').innerHTML = question[numQuestion].title;
+			for (var i = 0; i < 4; i++) {
+				document.getElementById('btn' + (i * 1 + 1)).value = question[numQuestion].answers[i].title;
+
+			}
+		}
+
+	</script>
+</head>
+<body onload="start()">
+	<table>
+		<tr>
+			<td>
+				<h1 id="question"></h1>
+			<td>
+		</tr>
+		<tr>
+			<td>
+				<input onclick="setAnswer(0)" id="btn1" type="button" value="">
+				<input onclick="setAnswer(1)" id="btn2" type="button" value="">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input onclick="setAnswer(2)" id="btn3" type="button" value="">
+				<input onclick="setAnswer(3)" id="btn4" type="button" value="">
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
