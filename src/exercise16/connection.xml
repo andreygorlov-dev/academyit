@@ -1,0 +1,8 @@
+<config>
+    <driverName>com.mysql.cj.jdbc.Driver</driverName>
+    <db>
+        <url>jdbc:mysql://localhost/lesson14</url>
+        <login>root</login>
+        <password></password>
+    </db>
+</config>
