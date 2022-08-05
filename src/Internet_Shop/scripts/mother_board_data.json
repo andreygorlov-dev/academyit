@@ -1,0 +1,21 @@
+[
+	{
+		"id" : 0,
+		"title" : "GIGABYTE H310M S2",
+		"price" : "3000",
+		"img" : "https://c.dns-shop.ru/thumb/st1/fit/wm/0/0/ff32f04c3b6ea94219f22887d73e0996/1e63841f75670d4fd978140be4c702bf449561f2a88e19a51fe72d6d20c36b59.jpg",
+		"description" : "Материнская плата GIGABYTE H310M S2 – хорошая основа для сборки компьютера."
+	}, {
+		"id" : 1,
+		"title" : "Esonic G41CPL3",
+		"price" : "4",
+		"img" : "https://c.dns-shop.ru/thumb/st1/fit/500/500/b32633f710ecbd75ae75fb09a85f3ebe/c8e470a41ad73b6329c8f6d3b6ee297aa7fb367f3188bebee790872ca4c6a90f.jpg",
+		"description" : "Материнская плата Esonic G41CPL3 предназначена для создания компактных домашних и офисных систем."
+	}, {
+		"id" : 2,
+		"title" : "GIGABYTE H310M H",
+		"price" : "2999",
+		"img" : "https://c.dns-shop.ru/thumb/st1/fit/500/500/ac3102d31926c26ec6a538d2b644a8d1/349b354b192ec1a1791f67972a4c9a5fca5cc108b33bb00339640c0be721a53f.jpg",
+		"description" : "Материнская плата GIGABYTE H310M H оптимальна для сборки компьютера офисного класса, применение которому можно будет найти и дома."
+	}
+]

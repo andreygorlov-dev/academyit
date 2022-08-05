@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $("table tr:odd").not("thead tr").css("backgroundColor","green");
+            $("table tr:even").not("thead tr").css("backgroundColor","blue");
+        });
+    </script>
+    <style>
+        table{
+            width:600px;
+            font-size:14px;
+            margin:0 auto;
+        }
+        td,th{
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Название товара</th>
+                <th>Стоимость товара</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+             <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+             <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+             <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+             <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+             <tr>
+                <td>Товар 1</td>
+                <td>100</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

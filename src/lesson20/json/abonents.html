@@ -1,0 +1,18 @@
+<div></div>
+
+
+<script>
+//    Функция fetch - выполняет запрос к серверу асинхронно и возвращает объект Promise.
+//    У объекта Promise есть три обработчика -
+//        1) then - он запускается если запрос прошел успешно
+//        2) catch - запускается в случае ошибки и некорректного адреса запроса
+//        3) finally - запускается всегда
+    
+    fetch('phonebook.json')
+        .then(text => text.json()) //text - это исходный код файла, к которому коннектились. А json() - преобразует строку json из файла в объект js и возвращает объект Promise
+        .then(data => {//data - это коллекция объектов, полученных после json()
+            data.forEach(item => {
+                document.querySelector('div').insertAdjacentHTML('beforeend',`Абонент ${item.name} имеет телефон ${item.phone}<hr>`);
+            });
+        });
+</script>

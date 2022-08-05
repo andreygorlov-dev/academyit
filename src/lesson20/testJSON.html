@@ -1,0 +1,28 @@
+<script>
+    let userJson = '{"name":"Иван","age":25,"isAdmin":true}';
+//    Преобразование JSON в объект
+    let user = JSON.parse(userJson);
+//    console.log(user);
+    user.dateCreated = '2022-08-01';
+    user.address = {
+        city:'Москва',
+        postalCode:'410002'
+    }
+    
+//    Преобразование объекта в JSON
+    
+    let user2 = JSON.stringify(user,null,4);
+//    console.log(user2);
+    
+//    Преобразование строки в объект с переопределением значения свойства
+    
+    let user3 = JSON.parse(user2,(key,value)=>{
+        if(key == "dateCreated"){
+            value = new Date(value);
+        }
+        return value;
+    });
+    
+    console.log(user3);
+    
+</script>
