@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			function getMarki(){
+				$.ajax({
+			        type: 'GET',
+			        url: 'catalog',
+			        data: 'action=getMarki',
+			        success: function(data_answer){
+			           $("#marki").append(data_answer);
+			           getModels($("#marki option:first").val());
+			        }
+			    });
+			}
+			
+			function getModels(id){
+				let str = `id=${id}&action=getModel`;
+				$.ajax({
+			        type: 'GET',
+			        url: 'catalog',
+			        data:str,
+			        success: function(data_answer){
+			           $("#models").empty();
+			           $("#models").append(data_answer);
+			           getInfoModel($("#models option:first").val())
+			        }
+			    });
+			}
+			
+			function getInfoModel(id) {
+				let str = `id=${id}&action=getInfo`;
+				$.ajax({
+			        type: 'GET',
+			        url: 'catalog',
+			        data: str,
+			        success: function(data_answer){
+			        	console.log(data_answer);
+			           $("#infoModel").text(data_answer);
+			        }
+			    });
+			}
+			
+		</script>
+	</head>
+	<body onload="getMarki()">
+		<select id="marki" onchange="getModels(value)"></select>
+		<select id="models" onchange="getInfoModel(value)"></select>
+		<p id="infoModel"></p>
+	</body>
+</html>
