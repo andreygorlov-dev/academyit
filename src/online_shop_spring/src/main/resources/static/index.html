@@ -1,0 +1,222 @@
+<!--Основная задача сделать API, по этому над дизайном не парился-->
+<html>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script>
+    var idCategory = -1;
+    var isEdit = false;
+    var idItem = -1;
+
+    function load() {
+        fetch("/category", {
+            method: 'GET'
+        })
+        .then(text => text.json())
+        .then(data => {
+            document.getElementById("menu")
+                .innerHTML = "";
+            data.forEach((item) => {
+                document.getElementById("menu")
+                    .innerHTML += "<li class='nav-item dropdown'>" +
+                    "<a onclick='onClickMenu(" + item.id + ")' class='nav-link' href='#' id='navbarDropdown'>" + item.title + "</a>" +
+                    "</li>";
+            });
+        });
+    }
+
+    function onClickMenu(id) {
+        document.getElementById("btnItemForm").style.display = "block";
+        idCategory = id;
+        console.log(id);
+        fetch("/category/" + id + "/item/", {
+            method: 'GET'
+        })
+        .then(text => text.json())
+        .then(data => {
+            document.getElementById("content").innerHTML = "";
+            data.forEach((item) => {
+                console.log(item);
+                document.getElementById("content")
+                    .innerHTML += "<tr>" +
+                    "<td>" + item.title + "</td>" +
+                    "<td>" + item.description + "</td>" +
+                    "<td>" + item.price + "</td>" +
+                    "<td>" + item.count + "</td>" +
+                    "<td><button onclick='buy(" + item.id + ", " + item.count + ", " + id + ")'>Купить</button></td>" +
+                    "<td><button onclick='showFormItem(" + item.id + ", " + item.count + ", true)'>Редактировать</button></td>" +
+                    "<td><button onclick='deleteItem(" + item.id + ")'>Удалить</button></td>"
+                "</tr>";
+            });
+        });
+    }
+
+    function deleteItem(id) {
+        fetch("/item/" + id, {
+            method: 'DELETE'
+        }).then(function() {
+            onClickMenu(idCategory);
+        }).catch(function (e) {
+            console.log(e);
+        })
+    }
+
+    function buy(id, count, idCategory) {
+        let curCount = count - 1;
+        console.log(id + " " + count);
+        fetch("/item/" + id, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "count" : curCount
+            })
+        }).then(function() {
+            onClickMenu(idCategory);
+        }).catch(function (e) {
+            console.log(e);
+        })
+    }
+
+    function showFormItem(id, count, edit) {
+        isEdit = edit;
+        idItem = id;
+        if (edit) {
+            document.getElementById("formItem").style.display = "block";
+            fetch("/item/" + id, {
+                method: 'GET'
+            }).then(text => text.json())
+                .then(data => {
+                console.log(data);
+                    document.getElementById("title").value = data.title;
+                    document.getElementById("description").value = data.description;
+                    document.getElementById("price").value = data.price;
+                    document.getElementById("count").value = data.count;
+                    document.getElementById("title").disabled = true;
+                    document.getElementById("description").disabled = true;
+            }).catch(function (e) {
+                console.log(e);
+            });
+        } else if (idCategory != -1) {
+            document.getElementById("formItem").style.display = "block";
+            document.getElementById("title").disabled = false;
+            document.getElementById("description").disabled = false;
+        }
+
+    }
+
+    function sendData() {
+        let title = document.getElementById("title").value;
+        let description = document.getElementById("description").value;
+        let price = document.getElementById("price").value;
+        let count = document.getElementById("count").value;
+        if (isEdit) {
+            if (price.trim().length == 0 && count.trim().length ==0) {
+                return;
+            }
+            let data = {
+                price : price.trim().length == 0 ? null : price,
+                count : count.trim().length == 0 ? null : count
+            }
+            fetch("/item/" + idItem, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(function() {
+                onClickMenu(idCategory);
+            }).catch(function (e) {
+                console.log(e);
+            });
+        } else {
+            let data = {
+                price : price,
+                count : count,
+                title : title,
+                description : description,
+                category: {
+                    id : idCategory
+                }
+            }
+            fetch("/item", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(function() {
+                onClickMenu(idCategory);
+            }).catch(function (e) {
+                console.log(e);
+            });
+        }
+    }
+
+    function closeFormItem() {
+        idItem = -1;
+        document.getElementById("formItem").style.display = "none";
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("count").value = "";
+    }
+
+    function closeFormCategory() {
+        document.getElementById("formCategory").style.display = "none";
+        document.getElementById("titleCategory").value = "";
+    }
+
+    function showFormCategory() {
+        document.getElementById("formCategory").style.display = "block";
+    }
+
+    function sendDataCategory() {
+        fetch("/category", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title : document.getElementById("titleCategory").value
+            })
+        }).then(function() {
+            load();
+        }).catch(function (e) {
+            console.log(e);
+        });
+    }
+
+</script>
+<body onload="load()">
+<header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto" id="menu">
+
+        </ul>
+    </div>
+</header>
+<div class="container mt-5 pt-5">
+    <table id="content">
+
+    </table>
+    <button style="margin-top: 50px; display: none" id = "btnItemForm" onclick="showFormItem(-1, -1, false)">Добавить товар</button>
+    <div style="display: none" id="formItem">
+        <input id = "title" type="text">
+        <input id = "description" type="text">
+        <input id = "price" type="text">
+        <input id = "count" type="text">
+        <button onclick="sendData()">Отправить</button>
+        <button onclick="closeFormItem()">Закрыть</button>
+    </div>
+    <button style="margin-top: 50px" onclick="showFormCategory()">Добавить категорию</button>
+    <div style="display: none" id="formCategory">
+        <input id = "titleCategory" type="text">
+        <button onclick="sendDataCategory()">Отправить</button>
+        <button onclick="closeFormCategory()">Закрыть</button>
+    </div>
+
+</div>
+</body>
+</html>
