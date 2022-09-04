@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <script>
+            function auth() {
+                let myHeaders = new Headers();
+                let login = document.getElementById("login").value;
+                let password = document.getElementById("password").value;
+                myHeaders.append("Authorization", "Basic " + btoa(login + ":" + password));
+                myHeaders.append("Content-Type", "application/json");
+                fetch("/auth/login", {
+                    method: 'POST',
+                    headers: myHeaders
+                }).then((response) => {
+                    console.log(response);
+                    window.localStorage.setItem("token", response.headers.get("x-csrf-token"));
+                    window.location.replace("http://localhost:8080/");
+                });
+            }
+
+            function reg() {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify({
+                    "name": document.getElementById("name").value,
+                    "login": document.getElementById("login").value,
+                    "password": document.getElementById("password").value
+                });
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+                fetch("/user", requestOptions
+                ).then((response) => {
+                    alert("Вы успешно зарегались");
+                })
+            }
+        </script>
+    </head>
+    <body>
+        <input type="text" id="login" placeholder="логин">
+        <input type="password" id="password" placeholder="пароль">
+        <input type="text" id="name" placeholder="имя">
+        <button onclick="auth()">Авторизоваться</button>
+        <button onclick="reg()">Регистрация</button>
+    </body>
+</html>

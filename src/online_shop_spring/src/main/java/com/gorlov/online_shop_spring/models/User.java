@@ -24,8 +24,6 @@ public class User {
     @NotBlank
     private String password;
 
-    private Boolean isSalesman;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

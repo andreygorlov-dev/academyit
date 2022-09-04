@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "online_shop_spring.http.api-key-header-name",
+      "type": "java.lang.String",
+      "description": "Description for online_shop_spring.http.api-key-header-name."
+    },
+    {
+      "name": "online_shop_spring.http.api-key",
+      "type": "java.lang.String",
+      "description": "Description for online_shop_spring.http.api-key."
+    }
+  ] }

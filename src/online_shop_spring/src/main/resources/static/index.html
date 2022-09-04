@@ -9,6 +9,9 @@
     var idItem = -1;
 
     function load() {
+        if (window.localStorage.getItem("token") !== null) {
+            document.getElementById("authBtn").style.display = "none";
+        }
         fetch("/category", {
             method: 'GET'
         })
@@ -51,9 +54,20 @@
         });
     }
 
+    function getToken() {
+        if (window.localStorage.getItem("token") === null) {
+            alert("необходимо авторизоваться");
+            throw "Вы не авторизованы";
+        }
+        return window.localStorage.getItem("token");
+    }
+
     function deleteItem(id) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-csrf-token", getToken());
         fetch("/item/" + id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: myHeaders
         }).then(function() {
             onClickMenu(idCategory);
         }).catch(function (e) {
@@ -67,7 +81,8 @@
         fetch("/item/" + id, {
             method: 'PUT',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": getToken()
             },
             body: JSON.stringify({
                 "count" : curCount
@@ -122,7 +137,8 @@
             fetch("/item/" + idItem, {
                 method: 'PUT',
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "x-csrf-token": getToken()
                 },
                 body: JSON.stringify(data)
             }).then(function() {
@@ -143,7 +159,8 @@
             fetch("/item", {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "x-csrf-token": getToken()
                 },
                 body: JSON.stringify(data)
             }).then(function() {
@@ -176,7 +193,8 @@
         fetch("/category", {
             method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-csrf-token": getToken()
             },
             body: JSON.stringify({
                 title : document.getElementById("titleCategory").value
@@ -188,10 +206,15 @@
         });
     }
 
+    function auth() {
+        window.location.replace("http://localhost:8080/authpage");
+    }
+
 </script>
 <body onload="load()">
 <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <button id="authBtn" onclick="auth()">Войти</button>
         <ul class="navbar-nav mr-auto" id="menu">
 
         </ul>
